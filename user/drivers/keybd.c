@@ -17,6 +17,10 @@
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Documentation annotations:
+// @A web_development_keybd Keyboard Driver Code
+// @A+
+
 #include "keybd.h"
 
 #include "../../server/server.h"
@@ -476,5 +480,6 @@ int StartThread(pID_t pID)
 		return ERROR;
 	}
 }
+// @A-
 
 /* END OF FILE */

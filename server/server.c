@@ -17,6 +17,10 @@
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Documentation annotations:
+// @A web_development_server Server Code
+// @A+
+
 #include "server.h"
 #include "../user/lib/syscall.h"
 #include "../user/lib/stdlib.h"
@@ -150,6 +154,7 @@ int DoRequest(pID_t request_pID)
 			action		= SEND_REPLY;
 			break;
 		}
+// @A-		
 		case GRANT_PAGE_SYSCALL :
 		{
 			/* i32_t GrantPage(i32_t src_pID, u32_t src_virtual_address,
@@ -202,7 +207,7 @@ int DoRequest(pID_t request_pID)
 			action		= SEND_REPLY;
 			break;
 		}
-
+// @A+
 		// Server Requests ////////////////////////////////////////////////////////////////////////
 		// Get Requests
 		case MSG_GET :
@@ -243,6 +248,7 @@ int DoRequest(pID_t request_pID)
 			}
 			break;
 		}
+// @A-
 		// Set Requests
 		case MSG_SET :
 		{
@@ -286,6 +292,7 @@ int DoRequest(pID_t request_pID)
 			}
 			break;
 		}
+// @A+
 		// File & Process requests
 		case MSG_OPEN_NAME:
 		{
@@ -315,7 +322,7 @@ int DoRequest(pID_t request_pID)
 			action = SEND_REPLY;
 			break;
 		}
-		
+// @A-		
 		// Startup info requests
 		// For now, this returns the video driver pID
 		case MSG_INFO :
@@ -346,6 +353,7 @@ int DoRequest(pID_t request_pID)
 			return -1;
 		}
 	}
+// @A+
     return action;
 }
 
@@ -416,6 +424,7 @@ int NewThread(void)
 	
 	return SEND_REPLY;
 }
+// @A-
 
 ///// Initialisation Functions ////////////////////////////////////////////////////////////////////
 

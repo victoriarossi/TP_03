@@ -16,6 +16,10 @@
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Documentation annotations:
+// @A web_development_testing Example User Code
+// @A+
+
 #include "lib/syscall.h"
 #include "lib/syscallext.h"
 #include "lib/stdlib.h"
@@ -68,5 +72,6 @@ int Open(void)
 	
 	return 1;
 }
+// @A-
 
 /* END OF FILE */
