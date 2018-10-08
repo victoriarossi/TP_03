@@ -10,6 +10,9 @@ kernel/mechanism/pc/boot/bios_read_disk.c
 user/drivers/disk/include/
 user/drivers/disk/kernel/
 *.exe
+tools/createimage/createimage
+tools/createimage/mergeimage
+tools/processtable/ptd
 *.lnk
 *temp*.*
 *stub*
