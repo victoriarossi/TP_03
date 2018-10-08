@@ -19,10 +19,10 @@
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#include "../../kernel/policy/types.h"
-
 #ifndef _KEYBD_H
 #define _KEYBD_H
+
+#include "../../kernel/policy/types.h"
 
 #define CAPS_OFF		0
 #define CAPS_ON			1
@@ -93,9 +93,9 @@
 #define ENTER	CR
 
 /* Lock keys */
-#define CALOCK	(0x01 + EXT)	/* caps lock	*/
-#define	NLOCK	(0x02 + EXT)	/* number lock	*/
-#define SLOCK	(0x03 + EXT)	/* scroll lock	*/
+#define CAPS_LOCK	(0x01 + EXT)
+#define	NUM_LOCK	(0x02 + EXT)
+#define SCROLL_LOCK	(0x03 + EXT)
 
 /* Numeric keypad */
 #define HOME	('7' + NUM)
@@ -208,7 +208,7 @@ keymap_t keymap = {
 /* 55 - '*'	*/		'*',		'*',
 /* 56 - ALT	*/		ALT,		ALT,
 /* 57 - ' '	*/		' ',		' ',
-/* 58 - CapsLck	*/	CALOCK,		CALOCK,
+/* 58 - CapsLck	*/	CAPS_LOCK,		CAPS_LOCK,
 /* 59 - F1	*/		F1,			SF1,
 /* 60 - F2	*/		F2,			SF2,
 /* 61 - F3	*/		F3,			SF3,
@@ -219,8 +219,8 @@ keymap_t keymap = {
 /* 66 - F8	*/		F8,			SF8,
 /* 67 - F9	*/		F9,			SF9,
 /* 68 - F10	*/		F10,		SF10,
-/* 69 - NumLock	*/	NLOCK,		NLOCK,
-/* 70 - ScrLock	*/	SLOCK,		SLOCK,
+/* 69 - NumLock	*/	NUM_LOCK,		NUM_LOCK,
+/* 70 - ScrLock	*/	SCROLL_LOCK,		SCROLL_LOCK,
 /* 71 - Home	*/	HOME,		HOME,
 /* 72 - CurUp	*/	UP,			UP,
 /* 73 - PgUp	*/	PGUP,		PGUP,
@@ -281,3 +281,6 @@ keymap_t keymap = {
 };
 
 #endif /* _KEYBD_H */
+
+#endif	// 
+

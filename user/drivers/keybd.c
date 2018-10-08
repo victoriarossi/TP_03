@@ -75,10 +75,9 @@ u8_t  scancode;
 u32_t kb_portID = KB_PORT_ID;
 u32_t server_msg[SERVER_MSG_SIZE];
 
-int   collect_string;
 int   name_ch;
 int   command;
-int   collect_string = 0;
+int   collect_string;
 u8_t  file_name[NAME_LENGTH];
 
 pID_t video_pID;
@@ -88,6 +87,7 @@ pID_t this_pID;
 int kmain(void)
 {
 	Open();
+	
 	while (1)
 	{
 		request_pID = Receive(KB_INT, request, SERVER_MSG_SIZE, 0); // Sleep on keyboard INT.
@@ -185,7 +185,6 @@ void CapsToggle(void)
 
 u8_t Keyboard_ISR(void)
 {
-	
 	u8_t ch				= 0;
 	int  key_released	= 0;
 	int  key_pressed	= 0;
@@ -261,12 +260,12 @@ u8_t Keyboard_ISR(void)
 
 		switch (key)
 		{
-			case CALOCK :
+			case CAPS_LOCK :
 			{
 				CapsToggle();
 				break;
 			}
-			case NLOCK :
+			case NUM_LOCK :
 			{
 				numlock = (numlock == NUMLOCK_ON ? NUMLOCK_OFF : NUMLOCK_ON);
 				break;
