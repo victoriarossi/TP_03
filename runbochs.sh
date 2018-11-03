@@ -2,9 +2,11 @@
 
 OS=$(uname -o)
 BOCHS_CONFIG=
+BOCHS=bochs
 case "$OS" in
 	"Cygwin")
 		BOCHS_CONFIG=./tools/bochs/cygwinbochs.bxs
+		BOCHS=bochsdbg
 		;;
 	"GNU/Linux")
 		BOCHS_CONFIG=./tools/bochs/gnubochs.bxs
@@ -16,4 +18,4 @@ case "$OS" in
 esac
 
 echo "Running Bochs in $OS environment, using $BOCHS_CONFIG."
-bochsdbg -q -f "$BOCHS_CONFIG"
+"$BOCHS" -q -f "$BOCHS_CONFIG"
