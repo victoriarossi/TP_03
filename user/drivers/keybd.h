@@ -281,6 +281,3 @@ keymap_t keymap = {
 };
 
 #endif /* _KEYBD_H */
-
-#endif	// 
-

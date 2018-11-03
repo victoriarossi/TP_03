@@ -35,8 +35,8 @@
 # the "wx" display library.
 #=======================================================================
 #config_interface: textconfig
-config_interface: win32config
-#config_interface: wx
+#config_interface: win32config
+config_interface: wx
 
 #=======================================================================
 # DISPLAY_LIBRARY
@@ -80,9 +80,9 @@ config_interface: win32config
 #display_library: win32, options="legacyF12" # use F12 to toggle mouse
 	 
 # use Win32 debugger gui, remove the options part to use the command line.
-display_library: win32, options="gui_debug"
+#display_library: win32, options="gui_debug"
 
-#display_library: wx
+display_library: wx
 #display_library: x, options="hideIPS" # disable IPS output in status bar
 #display_library: x, options="gui_debug" # use GTK debugger gui
 
@@ -99,7 +99,7 @@ display_library: win32, options="gui_debug"
 # now supported, but we still recommend to use the BIOS distributed with
 # Bochs. The start address optional, since it can be calculated from image size.
 #=======================================================================
-romimage: file=BIOS-bochs-latest
+romimage: file=tools/bochs/BIOS-bochs-latest
 #romimage: file=$BXSHARE/BIOS-bochs-latest
 #romimage: file=mybios.bin, address=0xfff80000 # 512k at memory top
 
@@ -190,7 +190,7 @@ romimage: file=BIOS-bochs-latest
 #=======================================================================
 # cpu: model=core2_penryn_t9600, count=1, ips=50000000, reset_on_triple_fault=1, ignore_bad_msrs=1, msrs="msrs.def"
 # cpu: cpuid_limit_winnt=0
-cpu: count=1, ips=23000000, reset_on_triple_fault=1, cpuid_limit_winnt=0, msrs="msrs.def"
+cpu: count=1, ips=23000000, reset_on_triple_fault=1, cpuid_limit_winnt=0
 # did have    ips=2000000, and it ran much faster, but maybe not so accurately.
 # Win7 laptop seems to run about 20-25Mips
 
@@ -364,7 +364,7 @@ memory: guest=8, host=256
 #=======================================================================
 #vgaromimage: file=bios/VGABIOS-elpin-2.40
 #vgaromimage: file=$BXSHARE/VGABIOS-lgpl-latest
-vgaromimage: file=VGABIOS-lgpl-latest
+vgaromimage: file=tools/bochs/VGABIOS-lgpl-latest
 #vgaromimage: file=bios/VGABIOS-lgpl-latest-cirrus
 
 #=======================================================================
@@ -421,11 +421,11 @@ vga: extension=vbe
 # write protect switch. By default it is turned off.
 #=======================================================================
 #floppya: 1_44=/dev/fd0, status=inserted
-floppya: 1_44=..\..\kernel.img, status=inserted
+floppya: 1_44=kernel.img, status=inserted
 
-#floppya: image=../1.44, status=inserted
+#floppya: image=1.44, status=inserted
 #floppya: 1_44=/dev/fd0H1440, status=inserted
-#floppya: 1_2=../1_2, status=inserted
+#floppya: 1_2=1_2, status=inserted
 #floppya: 1_44=a:, status=inserted
 #floppya: 1_44=a.img, status=inserted
 #floppya: 1_44=/dev/rfd0a, status=inserted
@@ -509,13 +509,13 @@ ata3: enabled=0, ioaddr1=0x168, ioaddr2=0x360, irq=9
 #   ata3-master: type=disk, mode=flat, path=483M.sample, cylinders=1024, heads=15, spt=63
 #   ata3-slave:  type=cdrom, path=iso.sample, status=inserted
 #=======================================================================
-#ata0-master: type=disk, path="..\kernel_hdd.img", mode=flat, cylinders=20, heads=16, spt=63
+#ata0-master: type=disk, path="kernel_hdd.img", mode=flat, cylinders=20, heads=16, spt=63
 
-ata0-master: type=disk, path="..\..\disk10mb.img", mode=flat, cylinders=20, heads=16, spt=63
+ata0-master: type=disk, path="disk10mb.img", mode=flat, cylinders=20, heads=16, spt=63
 # this is 10MB, 0x9D.7FF0 is the last row of 16 bytes, ie 0x9D.8000 is after last byte in image.
 # to create this image, run Bochs utility bximage, specifying hard disk, flat, 10 (for 10 MB).
 
-#ata0-master: type=disk, mode=flat, path="..\kernel.img", cylinders=306, heads=4, spt=17
+#ata0-master: type=disk, mode=flat, path="kernel.img", cylinders=306, heads=4, spt=17
 #ata0-master: type=disk, mode=flat, path="30M.sample", cylinders=615, heads=6, spt=17
 #ata0-master: type=disk, mode=flat, path="c.img", cylinders=0 # autodetect
 #ata0-slave: type=cdrom, path=D:, status=inserted
@@ -603,7 +603,7 @@ floppy_bootsig_check: disabled=0
 #   log: /dev/tty
 #=======================================================================
 #log: /dev/null
-log: k2_bochsout.log
+log: tools/bochs/gnu_bochsout.log
 
 #=======================================================================
 # LOGPREFIX:
@@ -663,7 +663,7 @@ debug: action=ignore, pci=report # report BX_DEBUG from module 'pci'
 #=======================================================================
 #debugger_log: /dev/null
 #debugger_log: debugger.out
-debugger_log: k2_debugger.log
+debugger_log: tools/bochs/gnu_debugger.log
 #debugger_log: -
 
 #=======================================================================
@@ -718,7 +718,7 @@ debugger_log: k2_debugger.log
 #   parport2: enabled=1, file="/dev/lp0"
 #   parport1: enabled=0
 #=======================================================================
-parport1: enabled=1, file="k2_parport.log"
+parport1: enabled=1, file="tools/bochs/gnu_parport.log"
 #parport1: enabled=0
 
 #=======================================================================
@@ -1067,16 +1067,16 @@ magic_break: enabled=1
 #   debug_symbols: file="kernel.sym"
 #   debug_symbols: file="kernel.sym", offset=0x80000000
 #=======================================================================
-debug_symbols: file="../../kernel.sym"
-debug_symbols: file="../../vkernel.sym"
-#debug_symbols: file="../../user/drivers/disk.sym"
-debug_symbols: file="../../server/server.sym"
+debug_symbols: file="kernel.sym"
+debug_symbols: file="vkernel.sym"
+#debug_symbols: file="user/drivers/disk.sym"
+debug_symbols: file="server/server.sym"
 
 #=======================================================================
 # other stuff
 #=======================================================================
-#load32bitOSImage: os=nullkernel, path=../kernel.img, iolog=../vga_io.log
-#load32bitOSImage: os=linux, path=../linux.img, iolog=../vga_io.log, initrd=../initrd.img
+#load32bitOSImage: os=nullkernel, path=kernel.img, iolog=vga_io.log
+#load32bitOSImage: os=linux, path=linux.img, iolog=vga_io.log, initrd=initrd.img
 #text_snapshot_check: enabled=1
 #print_timestamps: enabled=1
 
@@ -1105,6 +1105,6 @@ debug_symbols: file="../../server/server.sym"
 # examples.
 #
 # vgaromimage: :bios:VGABIOS-elpin-2.40
-# romimage: file=:bios:BIOS-bochs-latest, address=0xf0000
+# romimage: file=:bios:tools/bochs/BIOS-bochs-latest, address=0xf0000
 # floppya: 1_44=[fd:], status=inserted
 #=======================================================================
