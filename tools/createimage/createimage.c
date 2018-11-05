@@ -264,8 +264,8 @@ void CreateBootTableEntry(char *filename, int priority_or_size)
 	{
 		Write32(size);
 		Write32(g_current_block);
-		Write32(BOOT_TABLE_OBJECT_STATUS_0);
-		Write32(BOOT_TABLE_OBJECT_STATUS_1);
+		Write32(BOOT_TABLE_OBJECT_STATUS_0); // priority
+		Write32(BOOT_TABLE_OBJECT_STATUS_1); // first_instruction
 	}
 	else
 	{
@@ -280,15 +280,15 @@ void CreateBootTableEntry(char *filename, int priority_or_size)
 		
 		Write32(size);
 		Write32(g_current_block);
-		Write32(priority_or_size);
-		Write32(BOOT_TABLE_STATUS_0);
+		Write32(priority_or_size);				// priority
+		Write32(BOOT_TABLE_FIRST_INSTRUCTION);	// first_instruction
 		g_bootT[g_bootT_entry].block	= g_current_block;
 		g_bootT[g_bootT_entry].size		= size;
 	}
 	
-	PrintLog(GREEN "Add boot entry: %s | block start 0x%x (0x%x) | end 0x%x (0x%x) | size in blocks 0x%x.\n" NORMAL,
+	PrintLog(GREEN "Add boot entry: %s | block start 0x%x (0x%x) | end 0x%x (0x%x) | size in blocks 0x%x | first instruction 0x%x.\n" NORMAL,
 			filename, g_current_block, g_current_block * BLOCK_SIZE, g_current_block + size,
-			(g_current_block + size) * BLOCK_SIZE, size);
+			(g_current_block + size) * BLOCK_SIZE, size, BOOT_TABLE_FIRST_INSTRUCTION);
 
 	g_current_block += size;
 	g_bootT_entry++;
