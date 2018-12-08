@@ -24,7 +24,7 @@ extern pID_t video_pID;
  * until the end of the string is reached.*/
 void kprintf(const char *str)
 {
-	u32_t msg[SERVER_MSG_SIZE];
+	uint32_t msg[SERVER_MSG_SIZE];
 	
 	msg[MSG_TYPE]		= MSG_VIDEO_MSG;
 
@@ -62,10 +62,10 @@ void kprintf(const char *str)
 /* Print a single character to the video.*/
 int printc(char c)
 {
-	u32_t msg[SERVER_MSG_SIZE];
+	uint32_t msg[SERVER_MSG_SIZE];
 	
 	msg[MSG_TYPE]	= MSG_VIDEO_MSG;
-	msg[1]			= (u32_t)(c & 0xFF);
+	msg[1]			= (uint32_t)(c & 0xFF);
 	
 	Send(video_pID, msg, SERVER_MSG_SIZE, 0);
 	
@@ -74,9 +74,9 @@ int printc(char c)
 
 /* Print a hexadecimal number with 'width' number of digits. This will truncate numbers
  * accordingly. eg 0x1234 with width 3 will print as 234.*/
-int printx(u32_t num, int width)
+int printx(uint32_t num, int width)
 {
-	u32_t msg[SERVER_MSG_SIZE];
+	uint32_t msg[SERVER_MSG_SIZE];
 	msg[MSG_TYPE]	= MSG_VIDEO_MSG;
 	char *string	= (char*)&msg[1];
 	

@@ -36,7 +36,7 @@ int kmain(void)
 	
 	while (1)
 	{
-		Send(0x7001, (u32_t*)&c, 1, 0);
+		Send(0x7001, (uint32_t*)&c, 1, 0);
 		
 		printc(c);
 		

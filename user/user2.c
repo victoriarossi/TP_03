@@ -34,7 +34,7 @@ int kmain(void)
 	{
 		char c				= '0';
 
-		pID_t request_pID	= Receive(0x6001, (u32_t*)&c, 1, 0);
+		pID_t request_pID	= Receive(0x6001, (uint32_t*)&c, 1, 0);
 		
 		printx(request_pID >> VERSION_SHIFT, 1);
 		printc(c);

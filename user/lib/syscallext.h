@@ -21,36 +21,36 @@
 #include "../../kernel/policy/kernel.h"
 #include "../../server/server.h"
 
-int   SetProcessRequest(i32_t pID, int property, u32_t value);
-i32_t GetCoordinator(void);
-int   SetAsCoordinator(void);
-void  GetSystemInfo(void);
+int			SetProcessRequest(int32_t pID, int property, uint32_t value);
+int32_t		GetCoordinator(void);
+int			SetAsCoordinator(void);
+void		GetSystemInfo(void);
 
-i32_t AddPageRequest(pID_t pID, u32_t virtual_address, u32_t permissions);
-i32_t MapPageRequest(pID_t src_pID, u32_t src_virtual_address,
-					 pID_t dst_pID, u32_t dst_virtual_address, u32_t permissions);
-i32_t GrantPageRequest(pID_t src_pID, u32_t src_virt_addr,
-					   pID_t dst_pID, u32_t dst_virt_addr, u32_t permissions);
-i32_t UnmapPageRequest(pID_t pID, u32_t virtual_address);
+int32_t		AddPageRequest(pID_t pID, uint32_t virtual_address, uint32_t permissions);
+int32_t		MapPageRequest(pID_t src_pID, uint32_t src_virtual_address,
+						   pID_t dst_pID, uint32_t dst_virtual_address, uint32_t permissions);
+int32_t		GrantPageRequest(pID_t src_pID, uint32_t src_virt_addr,
+							 pID_t dst_pID, uint32_t dst_virt_addr, uint32_t permissions);
+int32_t		UnmapPageRequest(pID_t pID, uint32_t virtual_address);
 
 /* GetProcess variations */
-u32_t GetNumProcesses(void);
-u32_t GetTime(void);
-i32_t GetCurrentPid(void);
+uint32_t	GetNumProcesses(void);
+uint32_t	GetTime(void);
+int32_t		GetCurrentPid(void);
 
-u32_t GetPrivilege(pID_t pID);
-i32_t GetBasePage(pID_t pID);
-i32_t GetBasePage(pID_t pID);
-i32_t GetReason(pID_t pID);
-i32_t GetSize(pID_t pID);
-i32_t GetTimeRunning(pID_t pID);
-i32_t GetStartTime(pID_t pID);
-i32_t GetCurrentPriority(pID_t pID);
-i32_t GetPriority(pID_t pID);
-i32_t GetParentPid(pID_t pID);
-i32_t GetUserStack(pID_t pID);
-i32_t GetKernelStack(pID_t pID);
-i32_t GetMemoryRights(pID_t pID);
+uint32_t	GetPrivilege(pID_t pID);
+int32_t		GetBasePage(pID_t pID);
+int32_t		GetBasePage(pID_t pID);
+int32_t		GetReason(pID_t pID);
+int32_t		GetSize(pID_t pID);
+int32_t		GetTimeRunning(pID_t pID);
+int32_t		GetStartTime(pID_t pID);
+int32_t		GetCurrentPriority(pID_t pID);
+int32_t		GetPriority(pID_t pID);
+int32_t		GetParentPid(pID_t pID);
+int32_t		GetUserStack(pID_t pID);
+int32_t		GetKernelStack(pID_t pID);
+int32_t		GetMemoryRights(pID_t pID);
 
 #endif
 

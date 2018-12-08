@@ -48,7 +48,7 @@ void TestThreads(void)
 	
 	while (1)
 	{
-		Send(threads2_pID, (u32_t*)&c, sizeof(char) + TTHREAD + RTHREAD, 0);
+		Send(threads2_pID, (uint32_t*)&c, sizeof(char) + TTHREAD + RTHREAD, 0);
 		
 		if (c == 'z')
 			c = 'a';

@@ -17,7 +17,7 @@
 
 #include "syscall.h"
 
-pID_t Send(pID_t receiver_pID, u32_t *sender_msgB, u32_t length, u32_t timeout)
+pID_t Send(pID_t receiver_pID, uint32_t *sender_msgB, uint32_t length, uint32_t timeout)
 {
 	/* function is started with:
 	push   %ebp
@@ -43,7 +43,7 @@ pID_t Send(pID_t receiver_pID, u32_t *sender_msgB, u32_t length, u32_t timeout)
 	from system call.*/
 }
 
-pID_t Receive(pID_t sender_pID, u32_t *receiver_msgB, u32_t length, u32_t timeout)
+pID_t Receive(pID_t sender_pID, uint32_t *receiver_msgB, uint32_t length, uint32_t timeout)
 {
 	asm (
 		"push 20(%ebp)		\n\t"
@@ -56,14 +56,14 @@ pID_t Receive(pID_t sender_pID, u32_t *receiver_msgB, u32_t length, u32_t timeou
 		);
 }
 
-pID_t Sleep(pID_t sender_pID, u32_t *receiver_msgB, u32_t length, u32_t timeout)
+pID_t Sleep(pID_t sender_pID, uint32_t *receiver_msgB, uint32_t length, uint32_t timeout)
 {
 	return Receive(sender_pID, receiver_msgB, length, timeout);
 }
 
-pID_t Timer(u32_t timeout)
+pID_t Timer(uint32_t timeout)
 {
-	u32_t buffer = 0;
+	uint32_t buffer = 0;
 	return Receive(CLOCK_INTERRUPT, &buffer, 0, timeout);
 	// receive from clock with 0 length message and timeout.
 }
@@ -76,8 +76,8 @@ int Schedule(void)
 		);
 }
 
-pID_t AddProcess(u32_t priority, pID_t parent_pID, u32_t first_instruction,
-				 u32_t user_stack_addr, u32_t kernel_stack_addr,
+pID_t AddProcess(uint32_t priority, pID_t parent_pID, uint32_t first_instruction,
+				 uint32_t user_stack_addr, uint32_t kernel_stack_addr,
 				 pID_t excepter_pID, pID_t pager_pID)
 {
 	asm(
@@ -94,7 +94,7 @@ pID_t AddProcess(u32_t priority, pID_t parent_pID, u32_t first_instruction,
 		);
 }
 
-i32_t RemoveProcess(pID_t pID)
+int32_t RemoveProcess(pID_t pID)
 {
 	asm(
 		"push 8(%ebp)\n\t"
@@ -104,7 +104,7 @@ i32_t RemoveProcess(pID_t pID)
 		);
 }
 
-u32_t GetProcess(pID_t pID, u32_t *properties)
+uint32_t GetProcess(pID_t pID, uint32_t *properties)
 {
 	asm(
 		"push 12(%ebp)\n\t"
@@ -115,7 +115,7 @@ u32_t GetProcess(pID_t pID, u32_t *properties)
 	);
 }
 
-int SetProcess(pID_t pID, int property, u32_t value)
+int SetProcess(pID_t pID, int property, uint32_t value)
 {
 	asm(
 		"push 16(%ebp)\n\t"
@@ -127,7 +127,7 @@ int SetProcess(pID_t pID, int property, u32_t value)
 	);
 }
 
-int AddResource(pID_t pID, u32_t resource_type, u32_t index, u32_t value)
+int AddResource(pID_t pID, uint32_t resource_type, uint32_t index, uint32_t value)
 {
 	asm(
 		"push 20(%ebp)\n\t"
@@ -140,7 +140,7 @@ int AddResource(pID_t pID, u32_t resource_type, u32_t index, u32_t value)
 	);
 }
 
-int RemoveResource(u32_t resource_type, i32_t index)
+int RemoveResource(uint32_t resource_type, int32_t index)
 {
 	asm(
 		"push 12(%ebp)\n\t"
@@ -153,39 +153,39 @@ int RemoveResource(u32_t resource_type, i32_t index)
 
 // Read/Write Port Functions - map to Send/Receive /////////////////////
 
-int Read8(u32_t portID, void *data)
+int Read8(uint32_t portID, void *data)
 {
 	return Receive(portID, data, DATA8, 0);
 }
 
-int Write8(u32_t portID, u8_t data)
+int Write8(uint32_t portID, uint8_t data)
 {
-	return Send(portID, (u32_t*)&data, DATA8, 0);
+	return Send(portID, (uint32_t*)&data, DATA8, 0);
 }
 
-int Read16(u32_t portID, void *data)
+int Read16(uint32_t portID, void *data)
 {
 	return Receive(portID, data, DATA16, 0);
 }
 
-int Write16(u32_t portID, u16_t data)
+int Write16(uint32_t portID, uint16_t data)
 {
-	return Send(portID, (u32_t*)&data, DATA16, 0);
+	return Send(portID, (uint32_t*)&data, DATA16, 0);
 }
 
-int Read32(u32_t portID, void *data)
+int Read32(uint32_t portID, void *data)
 {
 	return Receive(portID, data, DATA32, 0);
 }
 
-int Write32(u32_t portID, u32_t data)
+int Write32(uint32_t portID, uint32_t data)
 {
 	return Send(portID, &data, DATA32, 0);
 }
 
 // Memory Functions ////////////////////////////////////////////////////
 
-i32_t AddPage(pID_t pID, u32_t virtual_address, u32_t permissions)
+int32_t AddPage(pID_t pID, uint32_t virtual_address, uint32_t permissions)
 {
 	asm(
 		"push 16(%ebp)\n\t"
@@ -197,8 +197,8 @@ i32_t AddPage(pID_t pID, u32_t virtual_address, u32_t permissions)
 	);
 }
 
-i32_t MapPage(pID_t src_pID, u32_t src_virtual_address, pID_t dst_pID, u32_t dst_virtual_address,
-			  u32_t permissions)
+int32_t MapPage(pID_t src_pID, uint32_t src_virtual_address, pID_t dst_pID, uint32_t dst_virtual_address,
+			  uint32_t permissions)
 {
 	asm(
 		"push 24(%ebp)\n\t"
@@ -212,8 +212,8 @@ i32_t MapPage(pID_t src_pID, u32_t src_virtual_address, pID_t dst_pID, u32_t dst
 	);
 }
 
-i32_t GrantPage(pID_t src_pID, u32_t src_virtual_address, pID_t dst_pID, u32_t dst_virtual_address,
-				u32_t permissions)
+int32_t GrantPage(pID_t src_pID, uint32_t src_virtual_address, pID_t dst_pID, uint32_t dst_virtual_address,
+				uint32_t permissions)
 {
 	asm(
 		"push 24(%ebp)\n\t"
@@ -227,7 +227,7 @@ i32_t GrantPage(pID_t src_pID, u32_t src_virtual_address, pID_t dst_pID, u32_t d
 	);
 }
 
-i32_t UnmapPage(pID_t pID, u32_t virtual_address)
+int32_t UnmapPage(pID_t pID, uint32_t virtual_address)
 {
 	asm(
 		"push 12(%ebp)\n\t"

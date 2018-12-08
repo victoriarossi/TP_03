@@ -51,19 +51,19 @@ thread_table_t			threadT[NUM_THREAD_ENTRIES];
 
 typedef struct filetable_entry
 {
-	char name[NAME_LENGTH];
-	i32_t block; //first block of object.
-	i32_t size;
+	char	name[NAME_LENGTH];
+	int32_t	block; //first block of object.
+	int32_t	size;
 } file_table;
 
-boot_table_t			*g_bootT;
+boot_table_t	*g_bootT;
 user_boot_t		*user_bootT;
-file_table			*g_fileT;
+file_table		*g_fileT;
 
-u32_t	request[SERVER_MSG_SIZE];
-u32_t	reply[SERVER_MSG_SIZE];
-u32_t	task_source;
-u32_t	max_num_procs;
+uint32_t	request[SERVER_MSG_SIZE];
+uint32_t	reply[SERVER_MSG_SIZE];
+uint32_t	task_source;
+uint32_t	max_num_procs;
 int		video_ready;
 
 pID_t	this_pID, request_pID;
@@ -76,25 +76,25 @@ pID_t	server_pID;
 // Object Server Interfaces ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-int Server(void);
-int DoRequest(pID_t pID);
-int NewProcess(void);
-int NewThread(void);
+int		Server(void);
+int		DoRequest(pID_t pID);
+int		NewProcess(void);
+int		NewThread(void);
 
-int Open(void);
-int InitMemory(void);
-int WaitForUsers(int num_users);
-int InitUsers(void);
+int		Open(void);
+int		InitMemory(void);
+int		WaitForUsers(int num_users);
+int		InitUsers(void);
 
-pID_t OpenFile(char *filename, pID_t parent_pID, u32_t priority);
-int CloseFile(pID_t pID);
+pID_t	OpenFile(char *filename, pID_t parent_pID, uint32_t priority);
+int		CloseFile(pID_t pID);
 
-int LoadFile(char *filename, pID_t new_process, unsigned load_address);
-int LoadBlocks(pID_t pID, u32_t load_address, block_array blocks, u32_t permissions);
+int		LoadFile(char *filename, pID_t new_process, unsigned load_address);
+int		LoadBlocks(pID_t pID, uint32_t load_address, block_array blocks, uint32_t permissions);
 
-i32_t FixPageFault(void);
-int PrintPageFault(void);
-int VideoReady(pID_t pID);
+int32_t	FixPageFault(void);
+int		PrintPageFault(void);
+int		VideoReady(pID_t pID);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Server /////////////////////////////////////////////////////////////////////////////////////////
@@ -133,7 +133,7 @@ int DoRequest(pID_t request_pID)
 		// System call requests ///////////////////////////////////////////////////////////////////
 		case ADD_PAGE_SYSCALL :
 		{
-			/* i32_t AddPage(i32_t pID, u32_t virtual_address, u32_t permissions); */
+			/* int32_t AddPage(int32_t pID, uint32_t virtual_address, uint32_t permissions); */
 			if (request[1] == USE_CURRENT_PROCESS)
 				request[1] = request_pID;
 			
@@ -143,8 +143,8 @@ int DoRequest(pID_t request_pID)
 		}
 		case MAP_PAGE_SYSCALL :
 		{
-			/* i32_t MapPage(i32_t src_pID, u32_t src_virtual_address,
-					i32_t dst_pID, u32_t dst_virtual_address, u32_t permissions); */
+			/* int32_t MapPage(int32_t src_pID, uint32_t src_virtual_address,
+					int32_t dst_pID, uint32_t dst_virtual_address, uint32_t permissions); */
 			if (request[1] == USE_CURRENT_PROCESS)
 				request[1] = request_pID;
 			else if (request[3] == USE_CURRENT_PROCESS)
@@ -157,8 +157,8 @@ int DoRequest(pID_t request_pID)
 // @A-		
 		case GRANT_PAGE_SYSCALL :
 		{
-			/* i32_t GrantPage(i32_t src_pID, u32_t src_virtual_address,
-					i32_t dst_pID, u32_t dst_virtual_address, u32_t permissions); */
+			/* int32_t GrantPage(int32_t src_pID, uint32_t src_virtual_address,
+					int32_t dst_pID, uint32_t dst_virtual_address, uint32_t permissions); */
 			if (request[1] == USE_CURRENT_PROCESS)
 				request[1] = request_pID;
 			else if (request[3] == USE_CURRENT_PROCESS)
@@ -170,7 +170,7 @@ int DoRequest(pID_t request_pID)
 		}
 		case UNMAP_PAGE_SYSCALL :
 		{
-			/* i32_t UnmapPage(i32_t pID, u32_t virtual_address); */
+			/* int32_t UnmapPage(int32_t pID, uint32_t virtual_address); */
 			if (request[1] == USE_CURRENT_PROCESS)
 				request[1] = request_pID;
 			
@@ -180,7 +180,7 @@ int DoRequest(pID_t request_pID)
 		}
 		case ADD_RESOURCE_SYSCALL :
 		{
-			/*int AddResource(i32_t pID, u32_t resource_type, u32_t index, u32_t value);*/
+			/*int AddResource(int32_t pID, uint32_t resource_type, uint32_t index, uint32_t value);*/
 			if (request[1] == USE_CURRENT_PROCESS)
 				request[1] = request_pID;
 			
@@ -201,8 +201,8 @@ int DoRequest(pID_t request_pID)
 			reply[0]	= AddProcess(request[1], request[5], 0, USER_STACK, KERNEL_STACK,
 								  request[2], request[3]);
 			
-			//u32_t AddProcess(u32_t priority, i32_t parent, u32_t instruction_pointer,
-			//				   u32_t user_stack, u32_t kernel_stack, i32_t excepter, i32_t pager);
+			//uint32_t AddProcess(uint32_t priority, int32_t parent, uint32_t instruction_pointer,
+			//				   uint32_t user_stack, uint32_t kernel_stack, int32_t excepter, int32_t pager);
 			
 			action		= SEND_REPLY;
 			break;
@@ -225,9 +225,9 @@ int DoRequest(pID_t request_pID)
 					// r1 is the virtual address, the return action is the page properties,
 					// eg RWX, dirty, accessed.
 					
-					u32_t properties[2];
+					uint32_t properties[2];
 					properties[0] = P_MEM_RIGHTS;
-					i32_t result;
+					int32_t result;
 					
 					if ((result = GetProcess(request_pID, properties)) < 0)
 					{
@@ -257,7 +257,7 @@ int DoRequest(pID_t request_pID)
 				case SET_PROCESS_SYSCALL :
 				{
 					reply[0] = SetProcess(request[2],request[3],request[4]);
-								//u32_t pID, u32_t value, u32_t reason);
+								//uint32_t pID, uint32_t value, uint32_t reason);
 					
 					action = SEND_REPLY;
 					break;
@@ -359,13 +359,13 @@ int DoRequest(pID_t request_pID)
 
 int NewProcess(void)
 {
-	int   action		= SEND_REPLY;
-	pID_t parent_pID	= request[1];
-	u32_t priority		= request[2];
-	priority			= priority & (~THREAD_FIELD);
+	int			action		= SEND_REPLY;
+	pID_t		parent_pID	= request[1];
+	uint32_t	priority	= request[2];
+	priority				= priority & (~THREAD_FIELD);
 	
-	i8_t filename[NAME_LENGTH];
-	i8_t *request_char = (i8_t*)&request[3];
+	int8_t		filename[NAME_LENGTH];
+	int8_t		*request_char = (int8_t*)&request[3];
 	
 	for (int i = 0; i < NAME_LENGTH; i++)
 	{
@@ -397,15 +397,15 @@ int NewProcess(void)
 
 int NewThread(void)
 {
-	pID_t parent_pID			= request[1]; // This is the existing process for the new thread.
-	u32_t priority				= request[2];
+	pID_t		parent_pID			= request[1]; // This is the existing process for the new thread.
+	uint32_t	priority			= request[2];
 	
-	priority					= priority | (THREAD_FIELD); // force this to be a new thread.
-	u32_t first_instruction		= 0;
-	u32_t user_stack			= USER_STACK - PAGE_SIZE;
-	u32_t kernel_stack			= KERNEL_STACK - KERNEL_STACK_SIZE;
+	priority						= priority | (THREAD_FIELD); // force this to be a new thread.
+	uint32_t	first_instruction	= 0;
+	uint32_t	user_stack			= USER_STACK - PAGE_SIZE;
+	uint32_t	kernel_stack		= KERNEL_STACK - KERNEL_STACK_SIZE;
 	
-	pID_t new_thread_pID		= AddProcess(priority, parent_pID, first_instruction,
+	pID_t		new_thread_pID		= AddProcess(priority, parent_pID, first_instruction,
 											 user_stack, kernel_stack,
 											 default_excepter_pID, default_pager_pID);
 	
@@ -440,7 +440,7 @@ int Open(void)
 		threadT[i].num_faults = 0;
 	}
 	
-	u32_t properties[2];
+	uint32_t properties[2];
 	properties[0]			= P_PID;
 	GetProcess(USE_CURRENT_PROCESS, properties);
 	this_pID				= properties[0];
@@ -470,7 +470,7 @@ int Open(void)
 
 int InitMemory(void)
 {
-	u32_t src_virtual_address, dst_virtual_address, i;
+	uint32_t src_virtual_address, dst_virtual_address, i;
 	
 	for (i = 0; i < NUM_FS_LOWMEM_PAGES; i++)
 	{
@@ -538,21 +538,21 @@ int InitUsers(void)
 
 // Open/Close Object //////////////////////////////////////////////////////////////////////////////
 
-pID_t OpenFile(i8_t *filename, pID_t parent_pID, u32_t priority)
+pID_t OpenFile(char *filename, pID_t parent_pID, uint32_t priority)
 {
-	int   add_thread			= 0;
-	u32_t instruction_pointer	= 0;
-	u32_t ustack				= USER_STACK;
-	u32_t kstack				= KERNEL_STACK;
-	u32_t user_memory_start		= 0;
+	int			add_thread			= 0;
+	uint32_t	instruction_pointer	= 0;
+	uint32_t	ustack				= USER_STACK;
+	uint32_t	kstack				= KERNEL_STACK;
+	uint32_t	user_memory_start	= 0;
 
 	if ((priority & THREAD_FIELD) == THREAD_FIELD)
 	{
 		add_thread++;
 	}
 
-	/* pID_t AddProcess(u32_t priority, pID_t parent_pID, u32_t first_instruction,
-	 *					u32_t user_stack_addr, u32_t kernel_stack_addr,
+	/* pID_t AddProcess(uint32_t priority, pID_t parent_pID, uint32_t first_instruction,
+	 *					uint32_t user_stack_addr, uint32_t kernel_stack_addr,
 	 *					pID_t excepter_pID, pID_t pager_pID);*/
 	pID_t new_pID = AddProcess(priority, parent_pID, instruction_pointer, ustack, kstack,
 								default_excepter_pID, default_pager_pID);
@@ -607,9 +607,9 @@ int LoadFile(char *filename, pID_t new_pID, unsigned load_address)
 	// then some of the blocks array can have 0's.
 	block_array	blocks;
 	block_t		current_block	= ft->block;
-	i32_t		file_size		= ft->size;
+	int32_t		file_size		= ft->size;
 	block_t		last_block		= current_block + (block_t)(file_size);
-	u32_t		permissions		= USER_RWX;
+	uint32_t	permissions		= USER_RWX;
 	int			pages_granted	= 0;
 	int			done			= 0;
 	
@@ -634,7 +634,7 @@ int LoadFile(char *filename, pID_t new_pID, unsigned load_address)
 
 // Load Blocks ////////////////////////////////////////////////////////////////////////////////////
 
-int LoadBlocks(pID_t user_pID, u32_t load_address, block_array blocks, u32_t permissions)
+int LoadBlocks(pID_t user_pID, uint32_t load_address, block_array blocks, uint32_t permissions)
 {
 	unsigned buffer_address = SERVER_BUFFER_ADDRESS;
 
@@ -671,7 +671,7 @@ int LoadBlocks(pID_t user_pID, u32_t load_address, block_array blocks, u32_t per
 ///// Page Fault //////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-i32_t FixPageFault(void)
+int32_t FixPageFault(void)
 {
 	int i = 0;
 	

@@ -25,14 +25,13 @@
 #define DISK_H
 
 #include "../../kernel/policy/kernel.h"
-#include "../../kernel/policy/types.h"
 
 #define PORT_CMD			(0x10 + PORT_PID_FIRST)
 #define PORT_CTL			(PORT_CMD + 8)
 #define PRI_DISK_INT		HWINT14
 #define SEC_DISK_INT		HWINT15
 
-#define DISK_BUFFER_ADDR	(u16_t*)0x5000
+#define DISK_BUFFER_ADDR	(uint16_t*)0x5000
 // disk data buffer for read/write.
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,13 +155,13 @@
 /* Common command block */
 typedef struct command_t
 {
-  u8_t	precomp;	/* REG_PRECOMP, etc. */
-  u8_t	count;
-  u8_t	sector;
-  u8_t	cyl_lo;
-  u8_t	cyl_hi;
-  u8_t	ldh;
-  u8_t	command;
+	uint8_t	precomp;	/* REG_PRECOMP, etc. */
+	uint8_t	count;
+	uint8_t	sector;
+	uint8_t	cyl_lo;
+	uint8_t	cyl_hi;
+	uint8_t	ldh;
+	uint8_t	command;
 } command_t;
 
 /* Timeouts and max retries. */

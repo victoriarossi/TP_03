@@ -45,7 +45,7 @@ void TestThreads(void)
 	
 	while (1)
 	{
-		sender = Receive(user1_pID, (u32_t*)&c, sizeof(char) + TTHREAD + RTHREAD, 0);
+		sender = Receive(user1_pID, (uint32_t*)&c, sizeof(char) + TTHREAD + RTHREAD, 0);
 		
 		if (sender > 0)
 			printx(sender >> 12, 1);

@@ -35,8 +35,8 @@ int  Identify(void);
 
 int  DoRequest(void);
 
-int  ReadWrite(int opcode, int sector, u16_t *buffer);
-int  ReadWriteDisk(int opcode, u16_t *buffer, int num_sectors);
+int  ReadWrite(int opcode, int sector, uint16_t *buffer);
+int  ReadWriteDisk(int opcode, uint16_t *buffer, int num_sectors);
 int  FlushCache(void);
 int  DoTransfer(drive_t *drive_ptr, unsigned int precomp, unsigned int count, unsigned int sector,
 				unsigned int opcode);
@@ -49,19 +49,19 @@ void ControllerNeedsReset(void);
 int  WaitForBusyErrorWriteFaultCleared(void);
 void WaitForBusyCleared(void);
 int  WaitForStatus(int mask, int value);
-int  GetUptime(u32_t *t);
+int  GetUptime(uint32_t *t);
 
 int  Specify(void);
 void RegisterInterrupt(void);
 int  Test(void);
 
-u32_t request[SERVER_MSG_SIZE];
-u32_t reply[SERVER_MSG_SIZE];
-pID_t request_pID;
-pID_t server_pID, video_pID;
-u16_t *disk_buffer;
-int   init_done = 0;
-int   test_status = 0;
+uint32_t	request[SERVER_MSG_SIZE];
+uint32_t	reply[SERVER_MSG_SIZE];
+pID_t		request_pID;
+pID_t		server_pID, video_pID;
+uint16_t	*disk_buffer;
+int			init_done = 0;
+int			test_status = 0;
 
 int kmain(void)
 {
@@ -144,13 +144,13 @@ void InitBuffer(void)
 	
 	request[0] = ADD_PAGE_SYSCALL;
 	request[1] = USE_CURRENT_PROCESS; //pID;
-	request[2] = (u32_t)DISK_BUFFER_ADDR; //virtual_address;
+	request[2] = (uint32_t)DISK_BUFFER_ADDR; //virtual_address;
 	request[3] = USER_RW; //permissions;
 	Send(server_pID, request, SERVER_MSG_SIZE,0);
 	Receive(server_pID, reply, SERVER_MSG_SIZE,0);
 
 	// the following initialisation is for debugging purposes.
-	u16_t *temp = DISK_BUFFER_ADDR;
+	uint16_t *temp = DISK_BUFFER_ADDR;
 	
 	for (int i = 0; i < 256; i++)
 		*temp++ = i+1;
@@ -234,8 +234,8 @@ int Identify(void)
 
 int DoRequest(void)
 {
-	u32_t sector	= request[1]*2;
-	u16_t *buffer	= (u16_t*)request[2];
+	uint32_t sector		= request[1]*2;
+	uint16_t *buffer	= (uint16_t*)request[2];
 	
 	switch (request[MSG_TYPE])
 	{
@@ -270,7 +270,7 @@ int DoRequest(void)
 // Disk Functions //////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 
-int ReadWrite(int opcode, int sector, u16_t *buffer)
+int ReadWrite(int opcode, int sector, uint16_t *buffer)
 {
 	drive_t *drive_ptr	= &driveT[0];
 	int sec_count		= 1;
@@ -300,7 +300,7 @@ int ReadWrite(int opcode, int sector, u16_t *buffer)
 	return result;
 }
 
-int ReadWriteDisk(int opcode, u16_t *buffer, int num_sectors)
+int ReadWriteDisk(int opcode, uint16_t *buffer, int num_sectors)
 {
 	// Minix only does a single sector for each of these. The interrupt
 	// and polling tests are required again for each sector.
@@ -451,8 +451,8 @@ void ControllerNeedsReset(void)
 /* Wait for an interrupt, study the status bits and return error/success.*/
 int WaitForBusyErrorWriteFaultCleared(void)
 {
-	int result;
-	i8_t status;
+	int		result;
+	int8_t	status;
 	
 	drive_t *drive_ptr = &driveT[0];
 	
@@ -488,7 +488,7 @@ void WaitForBusyCleared(void)
 	 * status to drive_ptr->status using Read8(). Check status is STATUS_ADMBSY|STATUS_BSY and keep
 	 * waiting on interrupt until this is not true (ie device is ready).*/
 
-	u32_t msg[SERVER_MSG_SIZE];
+	uint32_t msg[SERVER_MSG_SIZE];
 	int result;
 	drive_t *drive_ptr = &driveT[0];
 
@@ -525,7 +525,7 @@ void WaitForBusyCleared(void)
 int WaitForStatus(int mask, int value)
 {
 	//clock_t t0, t1;
-	u32_t t0, t1;
+	uint32_t t0, t1;
 	int s;
 	drive_t *drive_ptr = &driveT[0];
 
@@ -557,7 +557,7 @@ int WaitForStatus(int mask, int value)
 	return 0;
 }
 
-int GetUptime(u32_t *t)
+int GetUptime(uint32_t *t)
 {
 	*t = GetTime();
 	return OK;
