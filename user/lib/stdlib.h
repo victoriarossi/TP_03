@@ -17,8 +17,6 @@
 #define __STDLIB_H
 
 #include "syscall.h"
-#include "../../kernel/policy/types.h"
-#include "../../kernel/policy/kernel.h"
 #include "../../kernel/mechanism/pc/resources_pc.h"
 #include "../../server/server.h"
 
@@ -33,7 +31,7 @@
 
 void kprintf(const char *str);
 int	 printc(char c);
-int  printx(u32_t num, int width);
+int  printx(uint32_t num, int width);
 int  atoi(const char *str);
 int  kstrcmp(const char *str1, const char *str2);
 char *kstrcpy(char *destination, const char *source);

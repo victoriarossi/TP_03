@@ -23,7 +23,7 @@ pID_t user3_pID = 0x1243;
 char *str;
 char *str2;
 char *removeself;
-u32_t request[SERVER_MSG_SIZE];
+uint32_t request[SERVER_MSG_SIZE];
 float x,y;
 
 pID_t server_pID;
@@ -39,7 +39,8 @@ int FakeExceptionMsg(void);
 
 int kmain(void)
 {
-	u32_t run=0;
+	int run = 0;
+	
 	user3_pID = GetCurrentPid();
 	
 	server_pID = GetCoordinator();
@@ -54,7 +55,7 @@ int kmain(void)
 
 		run++;
 
-		if (run==4)
+		if (run == 4)
 		{
 			RemoveProcess(USE_CURRENT_PROCESS); //remove self.
 		}
@@ -131,7 +132,7 @@ int DoCodeDataFault(void)
 
 int FakeExceptionMsg(void)
 {
-	u32_t buffer[EXCEPTION_STACK_SIZE];
+	uint32_t buffer[EXCEPTION_STACK_SIZE];
 	buffer[EXC_NO] = 0x12;
 	buffer[CR2] = 0x023;
 	buffer[ERROR_CODE] = 0x1234;

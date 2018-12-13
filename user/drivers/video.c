@@ -52,26 +52,26 @@ int  video_limit				= 80 * 25 * 2;
 int  x;
 char colour;
 
-u32_t num_procs;
-u32_t user_buffers[20];
-u32_t request[SERVER_MSG_SIZE];
-u32_t reply[SERVER_MSG_SIZE];
-i32_t request_pID;
-u32_t d[MSG_MAX_LENGTH];
-u32_t src, dest;
-pID_t pager_pID;
-pID_t this_pID;
-pID_t server_pID;
-pID_t video_pID;
+uint32_t	num_procs;
+uint32_t	user_buffers[20];
+uint32_t	request[SERVER_MSG_SIZE];
+uint32_t	reply[SERVER_MSG_SIZE];
+int32_t		request_pID;
+uint32_t	d[MSG_MAX_LENGTH];
+uint32_t	src, dest;
+pID_t		pager_pID;
+pID_t		this_pID;
+pID_t		server_pID;
+pID_t		video_pID;
 
-int DoRequest(i32_t request_pID);
+int DoRequest(int32_t request_pID);
 int Open(void);
 int InitialiseVideoMemory();
 int InitVideoDisplay(void);
 
-int VideoCharOut(u32_t pID, char ch);
-int vprintf(i32_t src, char *str);
-int vprintx(u32_t num, int width);
+int VideoCharOut(uint32_t pID, char ch);
+int vprintf(int32_t src, char *str);
+int vprintx(uint32_t num, int width);
 int TellCoordVideoReady(void);
 
 int kmain(void)
@@ -85,7 +85,7 @@ int kmain(void)
 	}
 }
 
-int DoRequest(i32_t request_pID)
+int DoRequest(int32_t request_pID)
 {
 	switch (request[MSG_TYPE])
 	{
@@ -180,7 +180,7 @@ int InitVideoDisplay(void)
 }
 
 // Output a single character at the current cursor.
-int VideoCharOut(u32_t pID, char ch)
+int VideoCharOut(uint32_t pID, char ch)
 {
 	pID = pID >> VERSION_SHIFT;
 	
@@ -229,7 +229,7 @@ int VideoCharOut(u32_t pID, char ch)
 	return OK;
 }
 
-int vprintf(i32_t src, char *str)
+int vprintf(int32_t src, char *str)
 {
 	while (*str != 0)
 		VideoCharOut(src, *str++);
@@ -237,7 +237,7 @@ int vprintf(i32_t src, char *str)
 	return OK;
 }
 
-int vprintx(u32_t num, int width)
+int vprintx(uint32_t num, int width)
 {
 	char c[8];
 	int  temp;

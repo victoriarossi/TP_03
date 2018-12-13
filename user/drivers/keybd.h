@@ -22,7 +22,7 @@
 #ifndef _KEYBD_H
 #define _KEYBD_H
 
-#include "../../kernel/policy/types.h"
+#include <stdint.h>
 
 #define CAPS_OFF		0
 #define CAPS_ON			1
@@ -144,7 +144,7 @@
 #define NR_SCAN_CODES	0x80	/* Number of scan codes (rows in keymap) */
 #define KEY_RELEASED	NR_SCAN_CODES
 
-typedef u16_t keymap_t[NR_SCAN_CODES * MAP_COLS];
+typedef uint16_t keymap_t[NR_SCAN_CODES * MAP_COLS];
 
 keymap_t keymap = {
 /* column:			0			1			*/

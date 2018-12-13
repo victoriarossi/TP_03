@@ -18,16 +18,16 @@
 #include "../user/lib/syscallext.h"
 #include "../user/lib/stdlib.h"
 
-int  kmain(void);
-int  DoRequest(pID_t request_pID);
-int  Open(void);
-void PrintName(void);
-int  FixException(pID_t request_pID);
-int  PrintException(pID_t request_pID);
+int		kmain(void);
+int		DoRequest(pID_t request_pID);
+int		Open(void);
+void	PrintName(void);
+int		FixException(pID_t request_pID);
+int		PrintException(pID_t request_pID);
 
-u32_t request[SERVER_MSG_SIZE];
-u32_t buffer[EXCEPTION_STACK_SIZE];
-pID_t server_pID, video_pID;
+uint32_t	request[SERVER_MSG_SIZE];
+uint32_t	buffer[EXCEPTION_STACK_SIZE];
+pID_t		server_pID, video_pID;
 
 int kmain(void)
 {

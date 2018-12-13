@@ -69,23 +69,25 @@ int number_processes;
 int pt[MAX_PROCESSES][PROCESS_TABLE_ENTRY_SIZE]; // 16 process table entries, 16 rows of 4 ints per pt entry.
 process_table_t* pt_ptr, *first_pt_ptr, *last_pt_ptr;
 
-void			dprint(const char *fmt, ...);
-i32_t			Convert_ptr_pID(process_table_t* pID_ptr);
-process_table_t*	Convert_kptr_ptr(process_table_t* kptr);
-int				InterpretError(char *error_str);
-int				PrintTable(void);
-int				PrintIntro(void);
-int				PrintReason(process_table_t* pt_ptr);
-int				PrintFamily(process_table_t* pt_ptr);
-int				PrintMechanisms(void);
-int				MessageQueues(void);
-int				MessageBuffers(void);
-int				ScheduleQueues(void);
-int				OpenOutfile(char *outfile);
-int				ConvertTextInfile(char *infile);
-int				ConvertBinaryInfile(char *infile);
-int				PrintHelp(int no_args);
-int				ConvertOptions(char *options, char *error_code);
+void	dprint(const char *fmt, ...);
+int32_t	Convert_ptr_pID(process_table_t* pID_ptr);
+
+process_table_t* Convert_kptr_ptr(process_table_t* kptr);
+
+int		InterpretError(char *error_str);
+int		PrintTable(void);
+int		PrintIntro(void);
+int		PrintReason(process_table_t* pt_ptr);
+int		PrintFamily(process_table_t* pt_ptr);
+int		PrintMechanisms(void);
+int		MessageQueues(void);
+int		MessageBuffers(void);
+int		ScheduleQueues(void);
+int		OpenOutfile(char *outfile);
+int		ConvertTextInfile(char *infile);
+int		ConvertBinaryInfile(char *infile);
+int		PrintHelp(int no_args);
+int		ConvertOptions(char *options, char *error_code);
 
 int main(int argc, char* argv[])
 {
@@ -330,16 +332,16 @@ int PrintTable(void)
 	dprint(NORMAL "num_processes: %04x (word count for bochs %d) ", first_pt_ptr->msg[2], first_pt_ptr->msg[2]*PROCESS_TABLE_ENTRY_SIZE);
 	dprint(YELLOW "num_sleepers: %04x\n", first_pt_ptr->msg[3]);
 	process_table_t* readyqueue = Convert_kptr_ptr((process_table_t*)first_pt_ptr->msg[4]);
-	i32_t readypID = 0;
+	int32_t readypID = 0;
 	if (readyqueue != 0) readypID = readyqueue->pID;
 	process_table_t* fastqueue = Convert_kptr_ptr((process_table_t*)first_pt_ptr->msg[5]);
-	i32_t fastpID = 0;
+	int32_t fastpID = 0;
 	if (fastqueue != 0) fastpID = fastqueue->pID;
 	process_table_t* blockedqueue = Convert_kptr_ptr((process_table_t*)first_pt_ptr->msg[6]);
-	i32_t blockedpID = 0;
+	int32_t blockedpID = 0;
 	if (blockedqueue != 0) blockedpID = blockedqueue->pID;
 	process_table_t* runningpointer = Convert_kptr_ptr((process_table_t*)first_pt_ptr->msg[7]);
-	i32_t runningpID = 0;
+	int32_t runningpID = 0;
 	if (runningpointer != 0) runningpID = runningpointer->pID;
 
 	dprint(YELLOW "readyQ: %04x ", readypID);
@@ -351,13 +353,13 @@ int PrintTable(void)
 
 int MessageQueues(void)
 {
-	/*	u32_t msg[MSG_MAX_LENGTH];
-	i32_t msg_range_length;
-	u32_t timer;
+	/*	uint32_t msg[MSG_MAX_LENGTH];
+	int32_t msg_range_length;
+	uint32_t timer;
 	*/
 	process_table_t* temp_pt_ptr, *msgQ_ptr;
 	pt_ptr = first_pt_ptr;
-	i32_t temp_pID = 0;
+	int32_t temp_pID = 0;
 	dprint(RED_UNDERLINE "\nMessage Queues:\n" NORMAL);
 	while (pt_ptr <= last_pt_ptr)
 	{
@@ -416,7 +418,7 @@ int MessageBuffers(void)
 	//////////////// Message Buffers ///////////////////////////////////
 	process_table_t* temp_pt_ptr, *Pn_ptr;
 	pt_ptr = first_pt_ptr;
-	i32_t temp_pID = 0;
+	int32_t temp_pID = 0;
 	dprint(RED_UNDERLINE "\nMessage Buffers (note: hex values and characters print in opposite endian order).\n" NORMAL);
 	pt_ptr = first_pt_ptr;
 	while (pt_ptr <= last_pt_ptr)
@@ -442,11 +444,11 @@ int MessageBuffers(void)
 	return 1;
 }
 
-i32_t Convert_ptr_pID(process_table_t* pID_ptr)
+int32_t Convert_ptr_pID(process_table_t* pID_ptr)
 {
-	u32_t index = (u32_t)pID_ptr;
+	uint32_t index = (uint32_t)pID_ptr;
 	index = (index & 0xF00) >> 8;
-	i32_t temp_pID = pt[index][0];
+	int32_t temp_pID = pt[index][0];
 	printf("convert pID ptr %08x:: index=0x%X, pID=%08x\n",pID_ptr, index, temp_pID);
 	return temp_pID;
 }
@@ -457,7 +459,7 @@ process_table_t* Convert_kptr_ptr(process_table_t* kptr)
 	int int_num = (int)kptr;
 	if (int_num >= HWINT_FIRST && int_num <= HWINT_LAST) return NULL;
 	process_table_t* pt_ptr;
-	u32_t index = (u32_t)kptr;
+	uint32_t index = (uint32_t)kptr;
 	index = (index & 0xF00) >> 8;
 	pt_ptr = (process_table_t*)&pt[index][0];
 	if (option_debug == 1) printf("\n\nconvert pID ptr %08x:: index=0x%X, pt_ptr=%08x\n\n",kptr, index, pt_ptr);
@@ -556,7 +558,7 @@ int ScheduleQueues(void)
 
 int PrintReason(process_table_t* pt_ptr)
 {
-	i8_t reason = pt_ptr->reason;
+	int8_t reason = pt_ptr->reason;
 	char sign = ' ';
 	char rstring[50];
 	if (reason < 0)
@@ -576,7 +578,7 @@ int PrintFamily(process_table_t* pt_ptr)
 	process_table_t* temp_pt_ptr, *sibling_ptr;
 	int i = 1;
 	sibling_ptr = Convert_kptr_ptr(pt_ptr->sibling);
-	i32_t sibling_pID = 0;
+	int32_t sibling_pID = 0;
 	if (sibling_ptr != 0) sibling_pID = sibling_ptr->pID;
 	//dprint("\t0x%X's parent: 0x%X, ", pt_ptr->pID, pt_ptr->parent_pID);
 	dprint("**Family: sibling: 0x%X ", sibling_pID);
@@ -596,7 +598,7 @@ int PrintFamily(process_table_t* pt_ptr)
 int PrintMechanisms(void)
 {
 	process_table_t* pt_ptr = first_pt_ptr;
-	u32_t esp0 = 0, eip = 0, eflags = 0, eax = 0, ebx = 0, ecx = 0, edx = 0, esp = 0, ebp = 0, esi = 0, edi = 0;
+	uint32_t esp0 = 0, eip = 0, eflags = 0, eax = 0, ebx = 0, ecx = 0, edx = 0, esp = 0, ebp = 0, esi = 0, edi = 0;
 	dprint(GREEN_UNDERLINE "\nProcess Mechanisms (if values aren't shown it's because they are the same as pID 0x1001).\n" NORMAL);
 	while (pt_ptr <= last_pt_ptr)
 	{

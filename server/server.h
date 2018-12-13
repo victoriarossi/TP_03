@@ -16,7 +16,6 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include "../kernel/policy/types.h"
 #include "../kernel/policy/kernel.h"
 #include "../kernel/mechanism/pc/boot/bootdata.h"
 
@@ -25,7 +24,7 @@
 #define BLOCK_ADDRESS_MASK	((1 << BLOCK_SHIFT) - 1)
 #define BLOCK_MASK			(~BLOCK_ADDRESS_MASK)
 
-typedef i32_t				block_t;
+typedef int32_t				block_t;
 typedef block_t				block_array[BLOCKS_PER_PAGE];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,9 +54,9 @@ typedef block_t				block_array[BLOCKS_PER_PAGE];
 typedef struct thread_table_t thread_table_t;
 struct thread_table_t
 {
-	pID_t pID;
-	u32_t stack_bitmap;
-	int num_faults;
+	pID_t		pID;
+	uint32_t	stack_bitmap;
+	int			num_faults;
 };
 
 #define NUM_THREAD_ENTRIES	32

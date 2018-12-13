@@ -53,36 +53,36 @@
 #define TIMER2				0x42	/* I/O port for Timer channel 2 */
 #define TIMER_MODE			0x43	/* I/O port for Timer mode control */
 
-int   DoRequest(void);
-int   Open(void);
-void  RegisterKeyboard();
+int			DoRequest(void);
+int			Open(void);
+void		RegisterKeyboard();
 
-void  CapsToggle(void);
-u8_t  Keyboard_ISR(void);
+void		CapsToggle(void);
+uint8_t		Keyboard_ISR(void);
 
-void  StartCollectString(int new_command, char const *message);
-void  CollectString(u8_t ch);
+void		StartCollectString(int new_command, char const *message);
+void		CollectString(uint8_t ch);
 
-int   OpenFile(char *filename);
-int   StartThread(pID_t pID);
+int			OpenFile(char *filename);
+int			StartThread(pID_t pID);
 
-u32_t request[SERVER_MSG_SIZE];
-u32_t reply[SERVER_MSG_SIZE];
-i32_t request_pID;
+uint32_t	request[SERVER_MSG_SIZE];
+uint32_t	reply[SERVER_MSG_SIZE];
+int32_t		request_pID;
 
-int   shift, caps, ctrl, alt, numlock;
-u8_t  scancode;
-u32_t kb_portID = KB_PORT_ID;
-u32_t server_msg[SERVER_MSG_SIZE];
+int			shift, caps, ctrl, alt, numlock;
+uint8_t		scancode;
+uint32_t	kb_portID = KB_PORT_ID;
+uint32_t	server_msg[SERVER_MSG_SIZE];
 
-int   name_ch;
-int   command;
-int   collect_string;
-u8_t  file_name[NAME_LENGTH];
+int			name_ch;
+int			command;
+int			collect_string;
+uint8_t		file_name[NAME_LENGTH];
 
-pID_t video_pID;
-pID_t server_pID;
-pID_t this_pID;
+pID_t		video_pID;
+pID_t		server_pID;
+pID_t		this_pID;
 
 int kmain(void)
 {
@@ -183,12 +183,12 @@ void CapsToggle(void)
 	caps = (caps == CAPS_OFF) ? CAPS_ON : CAPS_OFF;
 }
 
-u8_t Keyboard_ISR(void)
+uint8_t Keyboard_ISR(void)
 {
-	u8_t ch				= 0;
-	int  key_released	= 0;
-	int  key_pressed	= 0;
-	int  numpad_pressed	= 0;
+	uint8_t	ch				= 0;
+	int		key_released	= 0;
+	int		key_pressed		= 0;
+	int		numpad_pressed	= 0;
 	
 	Read8(kb_portID, &scancode);	/* get the scan code for the key */
 	
@@ -231,7 +231,7 @@ u8_t Keyboard_ISR(void)
 			key = keymap[(scancode * MAP_COLS) + shift];
 		}
 
-		ch = (u8_t)key;
+		ch = (uint8_t)key;
 		
 		// Test whether a number pad key has been hit.
 		if ((key & NUM) == NUM)
@@ -361,7 +361,7 @@ void StartCollectString(int new_command, char const *message)
 	kprintf(message);
 }
 
-void CollectString(u8_t ch)
+void CollectString(uint8_t ch)
 {
 	file_name[name_ch++] = ch;
 	
@@ -433,7 +433,7 @@ int OpenFile(char *filename)
 	server_msg[2]				= NORMAL_PRIORITY;
 
 	// copy the file name to the message bufffer.
-	u8_t *msg_file_name			= (u8_t*)&server_msg[3];
+	uint8_t *msg_file_name		= (uint8_t*)&server_msg[3];
 
 	for (int i = 0; i < NAME_LENGTH; i++)
 	{
@@ -462,7 +462,7 @@ int OpenFile(char *filename)
 int StartThread(pID_t pID)
 {
 	server_msg[MSG_TYPE]		= MSG_NEW_THREAD;
-	server_msg[MSG_USER_TYPE]	= (u32_t)pID;
+	server_msg[MSG_USER_TYPE]	= (uint32_t)pID;
 	
 	Send(server_pID, server_msg, SERVER_MSG_SIZE, 0);
 	Receive(server_pID, server_msg, SERVER_MSG_SIZE, 0);

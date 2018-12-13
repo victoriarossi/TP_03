@@ -54,7 +54,7 @@ int TestBGA(void)
 
 void Draw(void)
 {
-	u32_t *pixel = (u32_t*)VIDEO_BASE;
+	uint32_t *pixel = (uint32_t*)VIDEO_BASE;
 	int i;
 	BREAK;
 	for(i=0;i<1600;i++) *pixel++ = 0x000000BB;
