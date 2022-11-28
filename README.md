@@ -5,17 +5,20 @@ Abril Occihipinti, 61159
 Nicolas Suarez Durrels, 62468
 Victoria Rossi, 61131
 
-# Objectivo
+# Objetivo
 Este trabajo consiste en buscar un sistema operativo de código abierto e investigar sus características.  
 
-# Compilacion 
+# Clonar el proyecto
+	   git clone --recurse-submodules https://github.com/victoriarossi/TP_03.git
 
+
+# Compilación 
 	docker pull aocchipinti/so-tp3:1.0
 	docker run -v "${PWD}:/root" --privileged -ti aocchipinti/so-tp3:1.0
 	cd root
 	make all
 
-# Ejecucion
+# Ejecución
     exit
 	./runqemu.sh
 
